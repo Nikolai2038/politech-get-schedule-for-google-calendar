@@ -3,7 +3,15 @@
 # Exit on any error
 set -e
 
-source "./0_env.sh"
+# ========================================
+# Import user's variables
+# ========================================
+if [ ! -f ".env" ]; then
+    echo "Create \".env\" file from \".env.example\" and change variables for your needs!" >&2
+fi
+# shellcheck source=.env
+source <(sed -E 's/\r$//;s/^\s*([^#].*?)=(.+?)\s*$/export \1=\2/' ".env") > /dev/null
+# ========================================
 
 curl 'https://my.spbstu.ru/home/profile/' \
     -X POST \
