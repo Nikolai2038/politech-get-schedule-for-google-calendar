@@ -32,7 +32,8 @@ This script download schedule from <https://my.spbstu.ru/> and saves it as `.ics
     ./get_schedule.sh [YYYY-MM-DD] [group name]
     ```
 
-    Passed arguments will be prioritized over variables, defined in `.env`.
+    - Passed arguments will be prioritized over variables, defined in `.env`;
+    - First argument must be FIRST day of the week.
 
 ## 4. Example
 
@@ -47,17 +48,17 @@ We need:
 2. Execute:
 
     ```bash
-    ./get_schedule.sh "2024-05-22" "5130904/30030"
+    ./get_schedule.sh "2024-05-20" "5130904/30030"
     ```
 
     It will output:
 
     ```text
-    JSON successfully saved to "./data/в5130904-30030_2024-05-22.json"!
-    JSON successfully converted to "./data/в5130904-30030_2024-05-22.ics"!
+    JSON successfully saved to "./data/в5130904-30030_2024-05-20.json"!
+    JSON successfully converted to "./data/в5130904-30030_2024-05-20.ics"!
     ```
 
-Actual response from server will be saved in `./data/в5130904-30030_2024-05-22.json`:
+Actual response from server will be saved in `./data/в5130904-30030_2024-05-20.json`:
 
 ```json
 {
@@ -120,11 +121,11 @@ Actual response from server will be saved in `./data/в5130904-30030_2024-05-22.
     ]
   ],
   "date_for_rasp": "20.05 - 26.05",
-  "today_date": "2024-05-22"
+  "today_date": "2024-05-20"
 }
 ```
 
-Generated ICS file for Google Calendar will be saved in `./data/в5130904-30030_2024-05-22.ics`:
+Generated ICS file for Google Calendar will be saved in `./data/в5130904-30030_2024-05-20.ics`:
 
 ```ics
 BEGIN:VCALENDAR
@@ -132,26 +133,26 @@ VERSION:2.0
 PRODID:-//Your Organization//Your Product//EN
 BEGIN:VEVENT
 SUMMARY:Практика - Математическое моделирование
-DTSTART:20240522T183000
-DTEND:20240522T200000
+DTSTART:20240520T183000
+DTEND:20240520T200000
 DESCRIPTION:Группы: в5130904/30030\n\nПреподаватель:\nЛеонтьева Татьяна Владимировна
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Лекции - Языки моделирования и описания цифровой аппаратуры
-DTSTART:20240524T183000
-DTEND:20240524T200000
+DTSTART:20240522T183000
+DTEND:20240522T200000
 DESCRIPTION:Группы: в5130904/30030\n\nПреподаватель:\nАмосов Владимир Владимирович
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Практика - Языки моделирования и описания цифровой аппаратуры
-DTSTART:20240524T201500
-DTEND:20240524T214500
+DTSTART:20240522T201500
+DTEND:20240522T214500
 DESCRIPTION:Группы: в5130904/30030\n\nПреподаватель:\nПетров Александр Владимирович
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Зачет - Технологии цифровой промышленности
-DTSTART:20240526T183000
-DTEND:20240526T213000
+DTSTART:20240524T183000
+DTEND:20240524T213000
 DESCRIPTION:Группы: в5130904/30030\n\nПреподаватель:\nСалкуцан Сергей Владимирович
 END:VEVENT
 END:VCALENDAR
