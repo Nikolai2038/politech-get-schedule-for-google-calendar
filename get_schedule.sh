@@ -123,10 +123,6 @@ convert_json_to_ics() {
 }
 
 main() {
-    # Optional arguments - if they are not defined, use from ".env" file
-    local week_first_day="${1:-"${WEEK_FIRST_DAY}"}" && { shift || true; }
-    local group_name="${1:-"${GROUP_NAME}"}" && { shift || true; }
-
     # ========================================
     # Import user's variables
     # ========================================
@@ -137,6 +133,10 @@ main() {
     # shellcheck source=.env
     source <(sed -E 's/\r$//;s/^\s*([^#].*?)=(.+?)\s*$/export \1=\2/' ".env") > /dev/null
     # ========================================
+
+    # Optional arguments - if they are not defined, use from ".env" file
+    local week_first_day="${1:-"${WEEK_FIRST_DAY}"}" && { shift || true; }
+    local group_name="${1:-"${GROUP_NAME}"}" && { shift || true; }
 
     # Input JSON file
     input_file="./data/в${group_name//"/"/"-"}_${week_first_day}.json"
