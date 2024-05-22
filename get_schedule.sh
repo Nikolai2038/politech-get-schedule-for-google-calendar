@@ -6,13 +6,34 @@ set -e
 # Get JSON data from site and save it to the file
 get_json() {
     local input_file="${1}" && { shift || true; }
+    if [ -z "${input_file}" ]; then
+        echo "Define file path to save JSON!" >&2
+        return 1
+    fi
+
+    local week_first_day="${1}" && { shift || true; }
+    if [ -z "${input_file}" ]; then
+        echo "Define week first day in YYYY-MM-DD format!" >&2
+        return 1
+    fi
+
+    local group_name="${1}" && { shift || true; }
+    if [ -z "${input_file}" ]; then
+        echo "Define group name!" >&2
+        return 1
+    fi
 
     local response
     response="$(curl --silent --show-error 'https://my.spbstu.ru/home/profile/' \
         -X POST \
         -H "X-CSRFToken: ${CSRF_TOKEN}" \
         -H "Cookie: csrftoken=${CSRF_TOKEN}" \
-        --data-raw "{\"parameter\":1,\"group_name\":\"\u0432${GROUP_NAME}\",\"today_date\":\"${WEEK_FIRST_DAY}\"}")"
+        --data-raw "{\"parameter\":1,\"group_name\":\"\u0432${group_name}\",\"today_date\":\"${week_first_day}\"}")"
+
+    if [ -z "${response}" ]; then
+        echo "Response is empty!" >&2
+        return 1
+    fi
 
     echo "${response}" | jq > "${input_file}"
 
@@ -102,6 +123,10 @@ convert_json_to_ics() {
 }
 
 main() {
+    # Optional arguments - if they are not defined, use from ".env" file
+    local week_first_day="${1:-"${WEEK_FIRST_DAY}"}" && { shift || true; }
+    local group_name="${1:-"${GROUP_NAME}"}" && { shift || true; }
+
     # ========================================
     # Import user's variables
     # ========================================
@@ -114,12 +139,12 @@ main() {
     # ========================================
 
     # Input JSON file
-    input_file="./data/${WEEK_FIRST_DAY}.json"
+    input_file="./data/в${group_name//"/"/"-"}_${week_first_day}.json"
 
     # Output ICS file for Google Calendar import
-    output_file="./data/${WEEK_FIRST_DAY}.ics"
+    output_file="./data/в${group_name//"/"/"-"}_${week_first_day}.ics"
 
-    get_json "${input_file}"
+    get_json "${input_file}" "${week_first_day}" "${group_name}"
     convert_json_to_ics "${input_file}" "${output_file}"
 
     return 0
